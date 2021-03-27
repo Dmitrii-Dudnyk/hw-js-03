@@ -3,9 +3,9 @@
 // содержатся как свойства объекта в формате "имя":"кол-во задач".
 
 const findBestEmployee = function (employees) {
-  return Object.keys(employees)[
-    Object.values(employees).indexOf(Math.max(...Object.values(employees)))
-  ];
+  for (const key in employees) {
+    if (employees[key] === Math.max(...Object.values(employees))) return key;
+  }
 };
 
 /*

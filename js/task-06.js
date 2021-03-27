@@ -10,9 +10,8 @@ const products = [
 ];
 
 const calculateTotalPrice = function (allProducts, productName) {
-  for (const product of allProducts) {
-    const { name, price, quantity } = product;
-    if (productName === name) return price * quantity;
+  for (const { name, price, quantity } of allProducts) {
+    if (name === productName) return price * quantity;
   }
 };
 

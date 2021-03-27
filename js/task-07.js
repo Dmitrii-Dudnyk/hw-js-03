@@ -5,13 +5,13 @@
  * Типов транзацкий всего два.
  * Можно положить либо снять деньги со счета.
  */
+
 const Transaction = {
   DEPOSIT: "deposit",
   WITHDRAW: "withdraw",
 };
 
 let id = 0;
-const getId = () => (id += 1);
 
 /*
  * Каждая транзакция это объект со свойствами: id, type и amount
@@ -29,7 +29,7 @@ const account = {
    * Принимает сумму и тип транзакции.
    */
   createTransaction(amount, type) {
-    return { id: getId(), amount, type };
+    return { id: (id += 1), type, amount };
   },
 
   /*
@@ -54,11 +54,10 @@ const account = {
    * о том, что снятие такой суммы не возможно, недостаточно средств.
    */
   withdraw(amount) {
-    if (amount > this.balance) {
-      console.log("Снятие такой суммы не возможно, недостаточно средств");
-      return;
-    }
     const withdraw = this.createTransaction(amount, Transaction.WITHDRAW);
+    if (amount > this.balance) {
+      return console.log("Снятие такой суммы не возможно, недостаточно средств");
+    }
     this.transactions.push(withdraw);
     this.balance -= amount;
   },
@@ -75,7 +74,7 @@ const account = {
    */
   getTransactionDetails(id) {
     for (const transaction of this.transactions) {
-      if (id === transaction.id) return transaction;
+      if (transaction.id === id) return transaction;
     }
   },
 
@@ -86,21 +85,8 @@ const account = {
   getTransactionTotal(type) {
     let total = 0;
     for (const transaction of this.transactions) {
-      if (type === transaction.type) total += transaction.amount;
+      if (transaction.type === type) total += transaction.amount;
     }
     return total;
   },
 };
-
-console.log(account.getBalance());
-account.deposit(5000);
-account.withdraw(3000);
-account.deposit(9500);
-account.withdraw(4000);
-console.log(account.getBalance());
-account.deposit(500);
-account.withdraw(20000);
-console.log(account.getTransactionDetails(2));
-console.log(account.getTransactionTotal("deposit"));
-console.log(account.getTransactionTotal("withdraw"));
-console.log(account.getBalance());
